@@ -1,2 +1,3 @@
-# Isalp_felagaskyrteini
- Python script that generates membership licences from a csv file
+# Ísalp félagaskírteini
+
+Python script that that reads members information from a CSV file and generates unique membership licence
