@@ -17,47 +17,52 @@ def drawMyRuler(pdf):
   pdf.drawString(10,700, 'y700')
   pdf.drawString(10,800, 'y800')
 
-fileName = 'felagaskyrteini'
-documentTitle = 'Félagaskýrteini - '
-title = 'Félagaskýrteini Íslenska alpaklúbbsins'
-subTitle = 'The larges carnivours...'
+fileName = 'felagaskirteini-'
+documentTitle = 'Félagaskirteini - '
+title = 'Félagaskirteini Íslenska alpaklúbbsins'
 image = 'isalplogo.png'
 year = 2020
 
-pdf = canvas.Canvas(fileName + '.pdf')
-pdf.setTitle(documentTitle)
-pdf.drawString(270,770,title)
-drawMyRuler(pdf)
-pdf.save()
-
-def idCalc(count):
-  check = count % (year - 2000)
-  return 'ISALP001' + str(check)
+# Reiknar og gefur unique ID neðst í skjalið
+def idCalc(count, line):
+  firstThree = line[0][0:3]
+  lastThree = line[0][3:6]
+  midSec = int(firstThree) + int(lastThree)
+  check = year - 2000
+  return 'ISALP' + str(count) + str(midSec) + str(check)
 
 with open('test.csv') as csv_file:
+  # Lesa skrá og hoppa yfir fyrstu línu
   csv_reader = csv.reader(csv_file)
-  
   next(csv_reader)
-
+  counter = 0
+  # Útbúa PDF Skjöl
   for line in csv_reader:
+    # Setja nafn á skjalið og haus
+    counter = counter + 1
     pdf = canvas.Canvas(fileName + line[1] + '.pdf')
     pdf.setTitle(documentTitle + line[1])
     drawMyRuler(pdf)
     pdf.setFont('Courier', 26)
-    pdf.drawCentredString(300,770,'Félagaskýrteini')
+    pdf.drawCentredString(300,770,'Félagaskírteini')
     pdf.drawCentredString(300,720,'Íslenska alpaklúbbsins')
     pdf.line(30,710,550,710)
 
     pdf.setFont('Courier', 18)
     pdf.drawCentredString(300,680, '2020-2021')
 
-    pdf.setFont('Courier', 14)
-    pdf.drawString(50,400,line[0] + ' er meðlimur í Íslenska alpaklúbbnum')
+    # Setja Ísalp logo á skjalið
+    pdf.drawInlineImage(image, 150, 350,300,300)
 
-    pdf.drawInlineImage(image, 130, 400)
+    # Setja nafn og kennitölu inn í skjalið
+    pdf.setFont('Courier', 12)
+    pdf.drawString(50,300,line[1] + ', kt:' + line[0] + ' er meðlimur í Íslenska alpaklúbbnum')
+
+    # Afsláttarkjör
+    pdf.drawString(50, 250, 'Framvísun þessa skírteinis veitir afslátt á eftirfarandi stöðum:')
 
     pdf.setFont('Courier', 10)
-    pdf.drawString(50, 100, idCalc(101))
-
+    pdf.drawString(50, 100, idCalc(counter,line))
+    print(counter)
     pdf.save()
     print(line)
