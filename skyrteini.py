@@ -42,7 +42,7 @@ with open('test.csv') as csv_file:
     counter = counter + 1
     pdf = canvas.Canvas(fileName + line[1] + '.pdf')
     pdf.setTitle(documentTitle + line[1])
-    drawMyRuler(pdf)
+    #drawMyRuler(pdf)
     pdf.setFont('Courier', 26)
     pdf.drawCentredString(300,770,'Félagaskírteini')
     pdf.drawCentredString(300,720,'Íslenska alpaklúbbsins')
@@ -59,10 +59,9 @@ with open('test.csv') as csv_file:
     pdf.drawString(50,300,line[1] + ', kt:' + line[0] + ' er meðlimur í Íslenska alpaklúbbnum')
 
     # Afsláttarkjör
-    pdf.drawString(50, 250, 'Framvísun þessa skírteinis veitir afslátt á eftirfarandi stöðum:')
+    pdf.drawString(50, 280, 'Framvísun þessa skírteinis veitir afslátt á eftirfarandi stöðum:')
 
     pdf.setFont('Courier', 10)
     pdf.drawString(50, 100, idCalc(counter,line))
-    print(counter)
     pdf.save()
     print(line)
